@@ -1,5 +1,6 @@
 .PHONY: docs
 .PHONY: screenshots
+.PHONY: release
 .PHONY: immichFrame.Web
 
 dev:
@@ -22,6 +23,10 @@ api:
 # Rebuild the README screenshots (see AGENTS.md)
 screenshots:
 	./tools/screenshots/run.sh
+
+# Tag a fork release: `make release` is a dry run, `make release ARGS=--push` pushes it (see AGENTS.md)
+release:
+	./tools/release.sh $(ARGS)
 
 docker-build-prod:
 	docker buildx build --platform linux/amd64 --no-cache . --target final -t ghcr.io/immichframe/immichframe:latest --build-arg VERSION=1.0.0.0
