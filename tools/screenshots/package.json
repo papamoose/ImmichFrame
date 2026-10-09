@@ -1,0 +1,13 @@
+{
+  "name": "immichframe-fork-screenshots",
+  "private": true,
+  "type": "module",
+  "description": "Screenshot + README tooling for this fork's features. See ../../AGENTS.md.",
+  "scripts": {
+    "capture": "node capture.mjs",
+    "readme": "node build-readme.mjs"
+  },
+  "dependencies": {
+    "playwright-core": "1.49.1"
+  }
+}

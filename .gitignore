@@ -457,3 +457,7 @@ $RECYCLE.BIN/
 ## Ignore Settings file
 ImmichFrame/Settings.json
 ImmichFrame.WebApi/Config/Settings.json
+# Screenshot tooling (tools/screenshots)
+tools/screenshots/.cache/
+tools/screenshots/node_modules/
+screenshots/_failed-*.png

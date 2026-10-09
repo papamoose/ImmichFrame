@@ -39,3 +39,6 @@ ImmichFrame.Android/
 ImmichFrame.Desktop/
 Makefile
 PrivacyPolicy.md
+# Fork tooling and screenshots are not needed in the image
+tools
+screenshots
