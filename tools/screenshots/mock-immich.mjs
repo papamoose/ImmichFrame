@@ -49,10 +49,21 @@ const people = ['Mom', 'Dad', 'Grandma Rose', 'Emma', 'Lucas', 'Sophie'].map((na
 	isHidden: false,
 	thumbnailPath: ''
 }));
-const tags = ['Birthday', 'Holiday', 'Family/Kids', 'Family/Pets', 'Travel/Utah', 'Vacation'].map((value, i) => ({
+// Which photos carry each tag. `name` is the full path (real Immich uses the last segment)
+// because the frame shows it as the photo's tag label, and the full path reads better.
+const tagDefs = [
+	['Birthday', 3, 8],
+	['Holiday', 0, 6],
+	['Family/Kids', 12, 17],
+	['Family/Pets', 15, 19],
+	['Travel/Utah', 21, 24],
+	['Vacation', 6, 15]
+];
+const tags = tagDefs.map(([value, from, to], i) => ({
 	id: uuid('7a9', i + 1),
-	name: value.split('/').pop(),
+	name: value,
 	value,
+	range: [from, to],
 	createdAt: NOW,
 	updatedAt: NOW
 }));
@@ -88,7 +99,7 @@ function asset(n) {
 		originalFileName: `IMG_${1000 + n}.jpg`,
 		originalPath: `/photos/IMG_${1000 + n}.jpg`,
 		ownerId: uuid('0a1', 1),
-		thumbhash: null,
+		thumbhash: '3OcRJYB4d3h/iIeHeEh3eIhw+j3A', // a valid placeholder hash; null renders a broken image in the frame
 		type: 'IMAGE',
 		visibility: 'timeline',
 		exifInfo: {
@@ -98,7 +109,8 @@ function asset(n) {
 			dateTimeOriginal: `2025-${String((n % 12) + 1).padStart(2, '0')}-14T15:30:00.000Z`,
 			description: ''
 		},
-		people: [people[n % people.length]]
+		people: [people[n % people.length]],
+		tags: tags.filter((t) => n >= t.range[0] && n < t.range[1]).map(({ range, ...t }) => t)
 	};
 }
 
@@ -119,19 +131,28 @@ const readBody = (req) =>
 		req.on('end', () => resolve(data ? JSON.parse(data) : {}));
 	});
 
-// Photos matching a search filter. Albums narrow the pool; the rest of the filter is ignored.
+// Photos matching ImmichFrame's search filter: the `or` branches (albums / people / tags)
+// are unioned, `albumIds.none` (hidden albums) is subtracted. Other fields are ignored.
 function matching(filter = {}) {
-	let ids = [...Array(ASSET_COUNT).keys()];
-	if (filter.albumIds?.length) {
-		const owned = new Set(
-			albums.filter((a) => filter.albumIds.includes(a.id)).flatMap((a) => range(...a.range))
-		);
-		ids = ids.filter((n) => owned.has(n));
+	const all = [...Array(ASSET_COUNT).keys()];
+	const inAlbums = (ids) =>
+		new Set(albums.filter((a) => ids.includes(a.id)).flatMap((a) => range(...a.range)));
+	let ids = all;
+	if (filter.or?.length) {
+		const keep = new Set();
+		for (const branch of filter.or) {
+			if (branch.albumIds?.any) inAlbums(branch.albumIds.any).forEach((n) => keep.add(n));
+			if (branch.personIds?.any)
+				all.filter((n) => branch.personIds.any.includes(people[n % people.length].id)).forEach((n) => keep.add(n));
+			if (branch.tagIds?.any)
+				tags
+					.filter((t) => branch.tagIds.any.includes(t.id))
+					.forEach((t) => range(...t.range).forEach((n) => keep.add(n)));
+		}
+		ids = all.filter((n) => keep.has(n));
 	}
-	if (filter.excludedAlbumIds?.length) {
-		const hidden = new Set(
-			albums.filter((a) => filter.excludedAlbumIds.includes(a.id)).flatMap((a) => range(...a.range))
-		);
+	if (filter.albumIds?.none?.length) {
+		const hidden = inAlbums(filter.albumIds.none);
 		ids = ids.filter((n) => !hidden.has(n));
 	}
 	return ids;
@@ -146,7 +167,7 @@ http
 		let m;
 		if (p === '/server/version') return json(res, { major: 3, minor: 2, patch: 1, prerelease: null });
 		if (p === '/albums') return json(res, albums.map(({ range, ...a }) => a));
-		if (p === '/tags') return json(res, tags);
+		if (p === '/tags') return json(res, tags.map(({ range, ...t }) => t));
 		if (p === '/people')
 			return json(res, { people, total: people.length, hidden: 0, hasNextPage: false });
 		if ((m = p.match(/^\/people\/[^/]+\/thumbnail$/)))
@@ -161,11 +182,11 @@ http
 		}
 		if (p === '/search/statistics') {
 			const body = await readBody(req);
-			return json(res, { total: matching(body).length });
+			return json(res, { total: matching(body.filter).length });
 		}
 		if (p === '/search/random') {
 			const body = await readBody(req);
-			const pool = matching(body);
+			const pool = matching(body.filter);
 			const shuffled = pool.sort(() => Math.random() - 0.5).slice(0, body.size ?? 10);
 			return json(res, shuffled.map(asset));
 		}
