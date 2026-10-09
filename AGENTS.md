@@ -73,6 +73,23 @@ Requirements: docker (with compose), node 20+, python3 with Pillow. Env override
 `SCREENSHOT_PORT` (default 18080), `CHROMIUM_PATH` (use an installed browser instead of
 downloading Playwright's).
 
-Gotchas learned the hard way: the collapsible "Accounts" settings card is open by default
-(clicking it closes it); Playwright's `click()` on Immich UI cards can scroll the page
-under the sticky header, so prefer a taller viewport (1280x1000) over full-page shots.
+## Screenshot conventions
+
+These are demo screenshots: a viewer must see the feature clearly. Completeness doesn't matter.
+
+- **Dark mode is the default** (`colorScheme: 'dark'` in `capture.mjs`), so output never
+  depends on the host's theme. Only the theme shot toggles to light.
+- **Keep the 1280x1000 viewport.** Rows cut off at the bottom are fine. Pick items that
+  are visible without scrolling (the first two rows of tiles) so the checkmarks show.
+- **Start picker shots at the top** with `shot(page, file, { top: true })`. Clicking tiles
+  further down scrolls the app shell (not the window) and hides the tab row under the
+  sticky header.
+- **The mock keeps 12 albums, 6 people, 6 tags. Don't shrink them.** The picker's search
+  box only appears for more than 8 items, so fewer albums silently loses the search shot.
+- Screenshots show whatever the mock serves, so keep it fake and tidy (clear names, no
+  real photos or keys).
+
+## Gotchas
+
+The collapsible "Accounts" settings card is open by default (clicking it closes it).
+Playwright's `click()` on Immich UI cards can scroll the page under the sticky header.
