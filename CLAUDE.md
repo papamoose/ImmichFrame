@@ -32,3 +32,9 @@ Use the template at `templates/release-template.md`. Key rules:
 - Write for end users, not developers. Avoid internal refactor jargon unless it has a user-visible effect.
 - Keep descriptions concise — 2–4 sentences per entry is enough.
 - Use "you" / "your" to address users directly.
+
+## Fork feature screenshots
+
+This is a feature fork. Whenever you add or change a user-visible feature, follow
+[`AGENTS.md`](AGENTS.md): update `tools/screenshots/features.json` and `capture.mjs`, run
+`make screenshots`, check the PNGs, and commit the regenerated README and screenshots.

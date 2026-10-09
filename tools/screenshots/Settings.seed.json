@@ -1,0 +1,28 @@
+{
+  "General": {
+    "Interval": 30,
+    "ShowClock": true,
+    "ShowPhotoDate": true,
+    "ShowImageLocation": true,
+    "ShowAlbumName": false,
+    "ShowWeatherDescription": false,
+    "Layout": "splitview",
+    "TouchZoneControls": true
+  },
+  "Accounts": [
+    {
+      "Name": "Mom's photos",
+      "ImmichServerUrl": "http://mock-immich:2283",
+      "ApiKey": "mock-api-key-mom",
+      "Albums": [],
+      "ExcludedAlbums": [],
+      "People": [],
+      "Tags": []
+    },
+    {
+      "Name": "Dad's photos",
+      "ImmichServerUrl": "http://mock-immich:2283",
+      "ApiKey": "mock-api-key-dad"
+    }
+  ]
+}

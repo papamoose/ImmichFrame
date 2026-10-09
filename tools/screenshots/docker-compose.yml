@@ -1,0 +1,29 @@
+# Throwaway stack for the README screenshots: ImmichFrame built from this checkout,
+# talking to a fake Immich. Driven by `make screenshots`; see AGENTS.md.
+name: immichframe-screenshots
+services:
+  mock-immich:
+    image: node:22-slim
+    working_dir: /app
+    command: ["node", "mock-immich.mjs"]
+    environment:
+      IMAGES_DIR: /images
+    volumes:
+      - ./mock-immich.mjs:/app/mock-immich.mjs:ro
+      - ./.cache/images:/images:ro
+
+  immichframe:
+    build:
+      context: ../..
+      target: final
+    depends_on:
+      - mock-immich
+    environment:
+      IMMICHFRAME_ADMIN_PASSWORD: screenshots
+      IMMICHFRAME_CONFIG_PATH: /app/Config
+      TZ: America/Denver
+    volumes:
+      # Imported into the (fresh) settings database on first start.
+      - ./Settings.seed.json:/app/Config/Settings.json:ro
+    ports:
+      - "127.0.0.1:${SCREENSHOT_PORT:-18080}:8080"
