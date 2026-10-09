@@ -27,6 +27,10 @@
 				<div class="h-5 sm:col-span-2"></div>
 			{/if}
 		{/if}
-		<SettingField {field} {target} />
+		{#if field.type === 'rating'}
+			<div class="mt-5 sm:col-span-2"><SettingField {field} {target} /></div>
+		{:else}
+			<SettingField {field} {target} />
+		{/if}
 	{/each}
 </div>

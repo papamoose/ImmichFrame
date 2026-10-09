@@ -8,7 +8,8 @@ export type FieldType =
 	| 'select'
 	| 'list'
 	| 'date'
-	| 'guid-list';
+	| 'guid-list'
+	| 'rating';
 
 export interface FieldDef<T = GeneralSettings> {
 	key: keyof T & string;
@@ -31,11 +32,14 @@ export interface SectionDef<T = GeneralSettings> {
 	fields: FieldDef<T>[];
 }
 
-// Non-checkbox fields first, then the checkboxes together (order within each group is kept).
+// Plain fields first, then the checkboxes together, then the star rating (order within each
+// group is kept).
 export function checkboxesLast<T>(fields: FieldDef<T>[]): FieldDef<T>[] {
+	const isOther = (f: FieldDef<T>) => f.type !== 'checkbox' && f.type !== 'rating';
 	return [
-		...fields.filter((f) => f.type !== 'checkbox'),
-		...fields.filter((f) => f.type === 'checkbox')
+		...fields.filter(isOther),
+		...fields.filter((f) => f.type === 'checkbox'),
+		...fields.filter((f) => f.type === 'rating')
 	];
 }
 
@@ -189,7 +193,12 @@ export const accountFields: FieldDef<ServerAccountSettings>[] = [
 	{ key: 'showArchived', label: 'Archived', type: 'checkbox' },
 	{ key: 'showVideos', label: 'Videos', type: 'checkbox' },
 	{ key: 'imagesFromDays', label: 'Images from (days back)', type: 'number' },
-	{ key: 'rating', label: 'Minimum rating', type: 'number', min: 1, max: 5 },
+	{
+		key: 'rating',
+		label: 'Minimum rating',
+		type: 'rating',
+		help: 'Only show photos with at least this many stars. Tap the same star again for any rating.'
+	},
 	{ key: 'imagesFromDate', label: 'Images from date', type: 'date' },
 	{ key: 'imagesUntilDate', label: 'Images until date', type: 'date' }
 ];

@@ -91,6 +91,16 @@ const scenarios = {
 		await shot(page, 'admin-saved-notice.png');
 	},
 
+	async 'rating-stars'({ page }) {
+		await adminLogin(page);
+		await page.getByRole('tab', { name: 'Settings' }).click();
+		await page.getByText('Minimum rating').first().scrollIntoViewIfNeeded();
+		await page.evaluate(() => window.scrollBy(0, 200)); // keep the stars clear of the sticky header
+		await page.getByRole('radio', { name: /^4 stars/ }).first().click();
+		await page.mouse.move(0, 0); // no hover effect in the shot
+		await shot(page, 'rating-stars.png');
+	},
+
 	async 'admin-theme-switch'({ page }) {
 		await adminLogin(page);
 		await imagesLoaded(page);
