@@ -56,6 +56,7 @@ export type GeneralSettings = {
     imagePan?: boolean;
     imageFill?: boolean;
     playAudio?: boolean;
+    touchZoneControls?: boolean;
     layout?: string | null;
     renewImagesDuration?: number;
     webcalendars?: string[] | null;
@@ -339,6 +340,7 @@ export type ClientSettingsDto = {
     imagePan?: boolean;
     imageFill?: boolean;
     playAudio?: boolean;
+    touchZoneControls?: boolean;
     layout?: string | null;
     language?: string | null;
 };
