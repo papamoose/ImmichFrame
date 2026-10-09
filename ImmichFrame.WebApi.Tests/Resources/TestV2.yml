@@ -35,6 +35,7 @@ General:
   ImagePan: true
   ImageFill: true
   PlayAudio: true
+  TouchZoneControls: true
   Layout: Layout_TEST
 Accounts:
 - Name: Account1.Name_TEST

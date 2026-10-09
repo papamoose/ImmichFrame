@@ -36,6 +36,7 @@
     "ImagePan": true,
     "ImageFill": true,
     "PlayAudio": true,
+    "TouchZoneControls": true,
     "Layout": "Layout_TEST"
   },
   "Accounts": [
