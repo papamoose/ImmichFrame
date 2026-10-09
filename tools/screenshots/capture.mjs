@@ -66,7 +66,8 @@ const scenarios = {
 
 		await page.getByRole('tab', { name: 'Tags' }).click();
 		await page.getByRole('checkbox', { name: /Family\/Kids/ }).click();
-		await shot(page, 'pickers-tags.png', { top: true });
+		// chips only: no empty page below
+		await shot(page, 'pickers-tags.png', { top: true, clip: { x: 0, y: 0, width: 1280, height: 500 } });
 	},
 
 	async 'named-accounts'({ page }) {
