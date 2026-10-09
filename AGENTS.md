@@ -12,8 +12,10 @@ branch/commit series:
 1. **Add an entry to `tools/screenshots/features.json`.** Fields: `id` (kebab-case),
    `title` (short, user-facing), `summary` (1-3 plain-English sentences: what it does and
    why you'd want it), and `screenshots` (`[{ "file": "name.png", "caption": "..." }]`).
-   Write for non-technical users. Fixes and refactors with no visible effect don't need
-   an entry. Fold small related changes into an existing entry instead of adding one.
+   Write for non-technical users. Pure refactors with no effect on users don't need
+   an entry. Bug fixes users would notice do: add them with `"type": "fix"` (listed under
+   "What this fork fixes"; no scenario needed, and `screenshots` may be empty or reuse an
+   existing PNG). Fold small related changes into an existing entry instead of adding one.
 2. **Add a scenario to `tools/screenshots/capture.mjs`** under `scenarios[<id>]` that
    drives the real UI to the state worth showing and calls `shot(page, '<file>')` for
    every screenshot listed. Behaviour that is invisible by default (like the tap zones) may

@@ -119,6 +119,7 @@ fs.mkdirSync(OUT, { recursive: true });
 const browser = await launch();
 let failed = false;
 for (const feature of features) {
+	if (feature.type === 'fix') continue; // fix entries reuse screenshots from feature scenarios
 	if (only && only !== feature.id) continue;
 	const scenario = scenarios[feature.id];
 	if (!scenario) {
