@@ -78,6 +78,14 @@ const scenarios = {
 		await shot(page, 'admin-saved-notice.png');
 	},
 
+	async 'admin-dark-mode'({ page }) {
+		await adminLogin(page);
+		await imagesLoaded(page);
+		await page.getByRole('switch').click(); // sun/moon button in the header
+		await page.waitForFunction(() => document.documentElement.classList.contains('dark'));
+		await shot(page, 'admin-dark-mode.png');
+	},
+
 	async 'refresh-photos'({ page }) {
 		await adminLogin(page);
 		await imagesLoaded(page);

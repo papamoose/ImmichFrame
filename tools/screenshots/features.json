@@ -29,6 +29,14 @@
     ]
   },
   {
+    "id": "admin-dark-mode",
+    "title": "Light / dark mode switch in the admin UI",
+    "summary": "The admin UI follows your browser's light or dark theme by default. The sun/moon button in the header switches it, and your choice is remembered on that device.",
+    "screenshots": [
+      { "file": "admin-dark-mode.png", "caption": "The admin UI in dark mode" }
+    ]
+  },
+  {
     "id": "refresh-photos",
     "title": "\"Refresh photos now\"",
     "summary": "One button clears everything ImmichFrame cached from Immich and makes running frames drop their queued photos. Changing the picked albums/people/tags does the same automatically, and frames re-check their config every 2 minutes, so changes show up without reloading the frame.",
