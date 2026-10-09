@@ -45,7 +45,7 @@ This fork exists to add features and fixes I wanted that the original project do
 
 #### Light / dark mode switch in the admin UI
 
-<p align="center"><img src="screenshots/admin-dark-mode.png" alt="The admin UI in dark mode" width="720"><br><sub>The admin UI in dark mode</sub></p>
+<p align="center"><img src="screenshots/admin-light-mode.png" alt="After pressing the switch: light mode (the other screenshots default to dark)" width="720"><br><sub>After pressing the switch: light mode (the other screenshots default to dark)</sub></p>
 
 #### "Refresh photos now"
 

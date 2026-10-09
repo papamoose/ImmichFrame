@@ -53,13 +53,13 @@
     ]
   },
   {
-    "id": "admin-dark-mode",
+    "id": "admin-theme-switch",
     "title": "Light / dark mode switch in the admin UI",
     "summary": "The admin UI follows your browser's light or dark theme by default. The sun/moon button in the header switches it, and your choice is remembered on that device.",
     "screenshots": [
       {
-        "file": "admin-dark-mode.png",
-        "caption": "The admin UI in dark mode"
+        "file": "admin-light-mode.png",
+        "caption": "After pressing the switch: light mode (the other screenshots default to dark)"
       }
     ]
   },
