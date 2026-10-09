@@ -8,6 +8,7 @@ This fork exists to add features I wanted that the original project doesn't have
 - **Pick albums, people and tags from tiles instead of typing UUIDs.** The admin UI has a "What to show" tab that lists albums, people and tags straight from Immich as tiles with cover photos. Tap what you want, press Save. The API key stays on the server.
 - **Name your accounts.** Accounts get an optional name that is shown in the admin UI instead of "Account 1", "Account 2".
 - **Admin split into "What to show" and "Settings" tabs.** Content selection and display settings are separate tabs. The selected tab is remembered across page refreshes, checkbox labels sit next to their boxes, and the "Saved" notice can be closed (and goes away by itself).
+- **Light / dark mode switch in the admin UI.** The admin UI follows your browser's light or dark theme by default. The sun/moon button in the header switches it, and your choice is remembered on that device.
 - **"Refresh photos now".** One button clears everything ImmichFrame cached from Immich and makes running frames drop their queued photos. Changing the picked albums/people/tags does the same automatically, and frames re-check their config every 2 minutes, so changes show up without reloading the frame.
 - **Tap-zone controls for touch screens.** New `TouchZoneControls` setting. The slideshow is split into three invisible tap zones: left = back, middle = pause/play, right = next. Works with mouse clicks too. (The dashed outlines in the screenshot are drawn for illustration only.)
 
@@ -34,6 +35,10 @@ This fork exists to add features I wanted that the original project doesn't have
 <p align="center"><img src="screenshots/admin-settings-tab.png" alt="The Settings tab" width="720"><br><sub>The Settings tab</sub></p>
 
 <p align="center"><img src="screenshots/admin-saved-notice.png" alt="The closable "Saved" notice" width="720"><br><sub>The closable "Saved" notice</sub></p>
+
+#### Light / dark mode switch in the admin UI
+
+<p align="center"><img src="screenshots/admin-dark-mode.png" alt="The admin UI in dark mode" width="720"><br><sub>The admin UI in dark mode</sub></p>
 
 #### "Refresh photos now"
 

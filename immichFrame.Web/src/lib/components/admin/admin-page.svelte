@@ -12,7 +12,8 @@
 		Code,
 		Heading,
 		IconButton,
-		Text
+		Text,
+		ThemeSwitcher
 	} from '@immich/ui';
 	import * as adminApi from '$lib/services/admin';
 	import {
@@ -245,6 +246,8 @@
 					<AdminBrand subtitle="Server settings" />
 
 					<div class="flex items-center gap-2">
+						<!-- Follows the browser's theme until clicked, then remembers the choice -->
+						<ThemeSwitcher color="secondary" />
 						<Button leadingIcon={mdiContentSave} loading={saving} onclick={save}>
 							{saving ? 'Saving…' : 'Save'}
 						</Button>
