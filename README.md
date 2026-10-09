@@ -10,6 +10,7 @@ This fork exists to add features and fixes I wanted that the original project do
 - **Pick albums, people and tags from tiles instead of typing UUIDs.** The admin UI has a "What to show" tab that lists albums, people and tags straight from Immich as tiles with cover photos. Long lists have a search box. Tap what you want, press Save. The API key stays on the server.
 - **Name your accounts.** Accounts get an optional name that is shown in the admin UI instead of "Account 1", "Account 2".
 - **Admin split into "What to show" and "Settings" tabs.** Content selection and display settings are separate tabs, and the "Saved" notice can be closed (and goes away by itself).
+- **Star selector for the minimum rating.** The account's "Minimum rating" is five tappable stars instead of a number box: only photos with at least that many stars are shown. Tap the same star again to go back to any rating.
 - **Light / dark mode switch in the admin UI.** The admin UI follows your browser's light or dark theme by default. The sun/moon button in the header switches it, and your choice is remembered on that device.
 - **"Refresh photos now".** One button clears everything ImmichFrame cached from Immich and makes running frames drop their queued photos. Changing the picked albums/people/tags does the same automatically, and frames re-check their config every 2 minutes, so changes show up without reloading the frame.
 - **Tap-zone controls for touch screens.** New `TouchZoneControls` setting. The slideshow is split into three invisible tap zones: left = back, middle = pause/play, right = next. Works with mouse clicks too. (The dashed outlines in the screenshot are drawn for illustration only.)
@@ -44,6 +45,10 @@ This fork exists to add features and fixes I wanted that the original project do
 <p align="center"><img src="screenshots/admin-settings-tab.png" alt="The Settings tab" width="720"><br><sub>The Settings tab</sub></p>
 
 <p align="center"><img src="screenshots/admin-saved-notice.png" alt="The closable "Saved" notice" width="720"><br><sub>The closable "Saved" notice</sub></p>
+
+#### Star selector for the minimum rating
+
+<p align="center"><img src="screenshots/rating-stars.png" alt="Minimum rating set to 4 stars" width="720"><br><sub>Minimum rating set to 4 stars</sub></p>
 
 #### Light / dark mode switch in the admin UI
 

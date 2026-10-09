@@ -68,6 +68,9 @@ const tags = tagDefs.map(([value, from, to], i) => ({
 	updatedAt: NOW
 }));
 
+// Star rating of photo n (1-5), so the rating filter has something to filter.
+const ratingOf = (n) => (n % 5) + 1;
+
 const assetIndex = (id) => (id.startsWith('ca5') ? Number(id.split('-').pop()) : -1);
 const assetId = (n) => uuid('ca5', n);
 const cities = [
@@ -107,7 +110,8 @@ function asset(n) {
 			state,
 			country: 'United States',
 			dateTimeOriginal: `2025-${String((n % 12) + 1).padStart(2, '0')}-14T15:30:00.000Z`,
-			description: ''
+			description: '',
+			rating: ratingOf(n)
 		},
 		people: [people[n % people.length]],
 		tags: tags.filter((t) => n >= t.range[0] && n < t.range[1]).map(({ range, ...t }) => t)
@@ -132,7 +136,7 @@ const readBody = (req) =>
 	});
 
 // Photos matching ImmichFrame's search filter: the `or` branches (albums / people / tags)
-// are unioned, `albumIds.none` (hidden albums) is subtracted. Other fields are ignored.
+// are unioned, `albumIds.none` (hidden albums) is subtracted, `rating.gte` is a minimum star rating. Other fields are ignored.
 function matching(filter = {}) {
 	const all = [...Array(ASSET_COUNT).keys()];
 	const inAlbums = (ids) =>
@@ -151,6 +155,7 @@ function matching(filter = {}) {
 		}
 		ids = all.filter((n) => keep.has(n));
 	}
+	if (typeof filter.rating?.gte === 'number') ids = ids.filter((n) => ratingOf(n) >= filter.rating.gte);
 	if (filter.albumIds?.none?.length) {
 		const hidden = inAlbums(filter.albumIds.none);
 		ids = ids.filter((n) => !hidden.has(n));

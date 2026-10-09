@@ -5,12 +5,15 @@
 		Checkbox,
 		Field,
 		HelperText,
+		Icon,
 		Input,
 		NumberInput,
 		PasswordInput,
 		Select,
+		Text,
 		Textarea
 	} from '@immich/ui';
+	import { mdiStar, mdiStarOutline } from '@mdi/js';
 
 	interface Props {
 		field: AnyFieldDef;
@@ -35,6 +38,13 @@
 
 	let textValue = $derived((target[field.key] as string | null) ?? '');
 	let dateValue = $derived(textValue.substring(0, 10));
+
+	// Minimum star rating: 1-5, or null/0 for "any". Tapping the picked star again clears it.
+	let rating = $derived((target[field.key] as number | null) ?? 0);
+
+	function pickRating(stars: number) {
+		target[field.key] = rating === stars ? null : stars;
+	}
 
 	function updateList(text: string) {
 		listText = text;
@@ -77,6 +87,29 @@
 				min={field.min}
 				max={field.max}
 			/>
+		{:else if field.type === 'rating'}
+			<!-- Field only draws its label for real inputs, so the label is drawn here -->
+			<Text size="small" class="font-medium">{field.label}</Text>
+			<div class="flex items-center gap-1" role="radiogroup" aria-label={field.label}>
+				{#each [1, 2, 3, 4, 5] as stars (stars)}
+					<button
+						type="button"
+						role="radio"
+						aria-checked={rating === stars}
+						aria-label="{stars} {stars === 1 ? 'star' : 'stars'} or more"
+						class="rounded-md p-1 transition hover:scale-110 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary {stars <=
+						rating
+							? 'text-amber-400'
+							: 'text-gray-400'}"
+						onclick={() => pickRating(stars)}
+					>
+						<Icon icon={stars <= rating ? mdiStar : mdiStarOutline} size="32" />
+					</button>
+				{/each}
+				<Text color="muted" size="small" class="ml-3">
+					{rating ? `${rating}+ stars` : 'Any rating'}
+				</Text>
+			</div>
 		{:else if field.type === 'password'}
 			<PasswordInput
 				autocomplete="off"

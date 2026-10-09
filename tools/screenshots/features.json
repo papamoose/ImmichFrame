@@ -57,6 +57,17 @@
     ]
   },
   {
+    "id": "rating-stars",
+    "title": "Star selector for the minimum rating",
+    "summary": "The account's \"Minimum rating\" is five tappable stars instead of a number box: only photos with at least that many stars are shown. Tap the same star again to go back to any rating.",
+    "screenshots": [
+      {
+        "file": "rating-stars.png",
+        "caption": "Minimum rating set to 4 stars"
+      }
+    ]
+  },
+  {
     "id": "admin-theme-switch",
     "title": "Light / dark mode switch in the admin UI",
     "summary": "The admin UI follows your browser's light or dark theme by default. The sun/moon button in the header switches it, and your choice is remembered on that device.",
