@@ -49,6 +49,79 @@ screenshots.
 - Don't commit `tools/screenshots/node_modules/`, `.cache/` or `_failed-*.png`
   (already gitignored). `_failed-<id>.png` is what the browser saw when a scenario broke.
 
+## Releases
+
+Fork releases are tagged `v<newest upstream release in main's history>-pk<N>`, e.g.
+`v1.0.39.0-pk7`. The version part always matches upstream. `N` is a single counter that
+only goes up: it does **not** reset when the upstream version changes (only reset it if the
+fork's changes get merged upstream).
+
+- Use `make release` (a dry run that prints the tag) and then `make release ARGS=--push`.
+  Never hand-pick the tag. `tools/release.sh` picks the version and `N`, requires a clean
+  `main` that matches `origin/main`, pushes the tag to `origin` only, and checks that no PR
+  exists against upstream.
+- Pushing a `v*` tag runs the release and multi-arch Docker image workflows in the fork, so
+  only tag when asked. Never move or delete a pushed tag without being asked.
+- To pick up a newer upstream release, rebase `main` onto `upstream/main` (see "Rebasing onto
+  upstream"), push, then run the release; the version part follows automatically.
+
+## Release writeups (notes for a GitHub release)
+
+This section is the upstream project's own rule, kept as-is. When asked to create a release writeup or release notes, follow this process and format:
+
+### Process
+
+1. Run `git log --oneline <prev-tag>..HEAD` to get all commits since the last release.
+2. Run `git diff <prev-tag>..HEAD --stat` to understand the scope of changes.
+3. Fetch the GitHub release page if a URL is provided to cross-reference the auto-generated changelog.
+4. Combine the raw git history with the GitHub changelog to produce a human-friendly writeup.
+
+### Output Format
+
+Use the template at `templates/release-template.md`. Key rules:
+
+- **Title**: `# 📦 ImmichFrame Release vX.X.X.X – <Date>`
+- **Intro**: One sentence summarising the release highlights (no heading).
+- **Sections**: Follow the category order from `.github/release.yml` — Breaking Changes, New Features, Fixes, Documentation, Maintenance, Other Changes.
+- **Each entry**:
+  - H4 heading with emoji + feature name
+  - Bold `**PR [#NNN](url) by @author**` attribution line
+  - 2–4 sentences describing *what* changed and *why it matters* to the user
+  - Include a code block if a config snippet helps illustrate usage
+  - Separate entries with `---`
+- **New Contributors**: Call out first-time contributors with 🎉
+- **Footer**: Always end with the full changelog comparison URL.
+
+### Tone
+
+- Write for end users, not developers. Avoid internal refactor jargon unless it has a user-visible effect.
+- Keep descriptions concise — 2–4 sentences per entry is enough.
+- Use "you" / "your" to address users directly.
+
+## Rebasing onto upstream
+
+Keep `main` as our commits replayed on top of `upstream/main`, so GitHub's "N commits ahead,
+0 behind" stays small and accurate. Never rewrite upstream's own commits (no
+`filter-branch`, message cleanups or similar across shared history): that gives them new
+hashes and GitHub then reports ~1,000 commits "behind" (this happened once and had to be
+undone).
+
+1. `git fetch upstream` (read-only), then `git rev-list --left-right --count upstream/main...main`.
+   Left number = new upstream commits, right = ours.
+2. `git rebase upstream/main`. Resolve conflicts in favour of keeping both upstream's change
+   and ours; if a fork commit is now redundant, drop it.
+3. Re-verify, because upstream UI or API changes can break things: build and run the tests
+   (`make test-webapi test-core`), then **re-run `make screenshots`** and look at every PNG.
+   Commit regenerated screenshots/README as a normal commit.
+4. Check `git rev-list --left-right --count upstream/main...main` shows `0` on the left.
+5. A rebase rewrites our commits, so the push is a force-push. **Ask first**, state that it
+   rewrites the fork's `main`, and use a lease on the exact old SHA, to `origin` only:
+   `git push --force-with-lease=main:<old-sha> origin main`.
+6. Afterwards check that no PR exists against upstream
+   (`https://api.github.com/repos/immichFrame/ImmichFrame/pulls?head=<fork-owner>:main&state=all`).
+7. Do **not** move or delete already-pushed release tags to follow the rebase (that re-runs
+   the image builds and replaces releases). Cut a new release instead; see Releases.
+
 ## Fork safety
 
 `origin` is the maintainer's fork; `upstream` is `immichFrame/ImmichFrame`. Never push to,
