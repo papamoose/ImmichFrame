@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { checkboxesLast, type FieldDef } from './admin-fields';
-	import { Text } from '@immich/ui';
+	import { Label } from '@immich/ui';
 	import SettingField from './setting-field.svelte';
 
 	interface Props {
@@ -21,7 +21,7 @@
 		{#if field.type === 'checkbox' && i > 0 && ordered[i - 1].type !== 'checkbox'}
 			{#if checkboxLabel}
 				<div class="mt-5 mb-1 sm:col-span-2">
-					<Text size="small" color="muted">{checkboxLabel}</Text>
+					<Label label={checkboxLabel} size="small" class="text-dark" />
 				</div>
 			{:else}
 				<div class="h-5 sm:col-span-2"></div>

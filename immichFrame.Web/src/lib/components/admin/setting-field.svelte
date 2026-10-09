@@ -7,6 +7,7 @@
 		HelperText,
 		Icon,
 		Input,
+		Label,
 		NumberInput,
 		PasswordInput,
 		Select,
@@ -89,7 +90,7 @@
 			/>
 		{:else if field.type === 'rating'}
 			<!-- Field only draws its label for real inputs, so the label is drawn here -->
-			<Text size="small" class="font-medium">{field.label}</Text>
+			<Label label={field.label} size="small" class="text-dark" />
 			<div class="flex items-center gap-1" role="radiogroup" aria-label={field.label}>
 				{#each [1, 2, 3, 4, 5] as stars (stars)}
 					<button
