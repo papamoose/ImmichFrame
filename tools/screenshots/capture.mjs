@@ -11,7 +11,14 @@ const OUT = path.resolve(import.meta.dirname, '../../screenshots');
 const PASSWORD = 'screenshots';
 const features = JSON.parse(fs.readFileSync(path.join(import.meta.dirname, 'features.json'), 'utf8'));
 
-const shot = async (page, file, opts = {}) => {
+// `top: true` scrolls back to the top first; clicking tiles further down the page scrolls it,
+// which would hide the tab row under the sticky header.
+const shot = async (page, file, { top = false, ...opts } = {}) => {
+	if (top)
+		await page.evaluate(() => {
+			window.scrollTo(0, 0);
+			document.querySelectorAll('*').forEach((e) => e.scrollTop && (e.scrollTop = 0)); // the app shell scrolls, not the window
+		});
 	await page.waitForTimeout(400); // let transitions and lazily loaded thumbnails settle
 	await page.screenshot({ path: path.join(OUT, file), ...opts });
 	console.log('  wrote', file);
@@ -39,22 +46,27 @@ const scenarios = {
 		await adminLogin(page);
 		await page.getByRole('tab', { name: 'Albums', exact: true }).click();
 		await imagesLoaded(page);
-		for (const a of ['Family Christmas 2025', 'Grandkids', 'Summer at the Lake']) await tile(page, a).click();
-		await shot(page, 'pickers-albums.png');
+		for (const a of ['Family Christmas 2025', 'Grandkids', 'Birthday Party 2024']) await tile(page, a).click();
+		await shot(page, 'pickers-albums.png', { top: true });
+
+		await page.getByPlaceholder('Search albums').fill('christmas');
+		await page.waitForTimeout(300);
+		await shot(page, 'pickers-search.png', { top: true });
+		await page.getByPlaceholder('Search albums').fill('');
 
 		await page.getByRole('tab', { name: 'Albums to hide' }).click();
 		await imagesLoaded(page);
 		await tile(page, 'Garden Projects').click();
-		await shot(page, 'pickers-hide-albums.png');
+		await shot(page, 'pickers-hide-albums.png', { top: true });
 
 		await page.getByRole('tab', { name: 'People' }).click();
 		await imagesLoaded(page);
 		for (const p of ['Emma', 'Lucas']) await tile(page, p).click();
-		await shot(page, 'pickers-people.png');
+		await shot(page, 'pickers-people.png', { top: true });
 
 		await page.getByRole('tab', { name: 'Tags' }).click();
 		await page.getByRole('checkbox', { name: /Family\/Kids/ }).click();
-		await shot(page, 'pickers-tags.png');
+		await shot(page, 'pickers-tags.png', { top: true });
 	},
 
 	async 'named-accounts'({ page }) {
