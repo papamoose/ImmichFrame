@@ -18,8 +18,9 @@ if (missing.length) {
 	process.exit(1);
 }
 
-const bullets = features.map((f) => `- **${f.title}.** ${f.summary}`).join('\n');
-const shots = features
+const bullets = (list) => list.map((f) => `- **${f.title}.** ${f.summary}`).join('\n');
+const shotsFor = (list) =>
+	list
 	.map((f) => {
 		const imgs = f.screenshots
 			.map(
@@ -31,14 +32,21 @@ const shots = features
 	})
 	.join('\n\n');
 
+const added = features.filter((f) => f.type !== 'fix');
+const fixes = features.filter((f) => f.type === 'fix');
+
 const block = `${START}
 ### What this fork adds
 
-${bullets}
+${bullets(added)}
+
+### What this fork fixes
+
+${bullets(fixes)}
 
 ### Screenshots
 
-${shots}
+${shotsFor(features.filter((f) => f.screenshots.length))}
 ${END}`;
 
 const readme = fs.readFileSync(README, 'utf8');
