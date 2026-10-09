@@ -20,7 +20,13 @@ const albumDefs = [
 	['Grandkids', 12, 17, true],
 	['Garden Projects', 17, 21, false],
 	['Road Trip to Utah', 21, 24, true],
-	['Old Family Photos', 0, 24, false]
+	['Old Family Photos', 0, 24, false],
+	['Birthday Party 2024', 3, 8, true],
+	['Christmas Morning', 0, 4, false],
+	['Camping Trip', 9, 15, false],
+	['Dog Park', 15, 19, false],
+	['Thanksgiving', 18, 23, true],
+	['Wedding Anniversary', 1, 5, false]
 ];
 const albums = albumDefs.map(([albumName, from, to, shared], i) => ({
 	id: uuid('a1b', i + 1),

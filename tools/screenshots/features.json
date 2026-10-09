@@ -2,11 +2,15 @@
   {
     "id": "visual-pickers",
     "title": "Pick albums, people and tags from tiles instead of typing UUIDs",
-    "summary": "The admin UI has a \"What to show\" tab that lists albums, people and tags straight from Immich as tiles with cover photos. Tap what you want, press Save. The API key stays on the server.",
+    "summary": "The admin UI has a \"What to show\" tab that lists albums, people and tags straight from Immich as tiles with cover photos. Long lists have a search box. Tap what you want, press Save. The API key stays on the server.",
     "screenshots": [
       {
         "file": "pickers-albums.png",
         "caption": "Albums, with a few picked"
+      },
+      {
+        "file": "pickers-search.png",
+        "caption": "Long lists get a search box"
       },
       {
         "file": "pickers-hide-albums.png",
