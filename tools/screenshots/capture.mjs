@@ -78,12 +78,13 @@ const scenarios = {
 		await shot(page, 'admin-saved-notice.png');
 	},
 
-	async 'admin-dark-mode'({ page }) {
+	async 'admin-theme-switch'({ page }) {
 		await adminLogin(page);
 		await imagesLoaded(page);
-		await page.getByRole('switch').click(); // sun/moon button in the header
 		await page.waitForFunction(() => document.documentElement.classList.contains('dark'));
-		await shot(page, 'admin-dark-mode.png');
+		await page.getByRole('switch').click(); // sun/moon button in the header: dark -> light
+		await page.waitForFunction(() => !document.documentElement.classList.contains('dark'));
+		await shot(page, 'admin-light-mode.png');
 	},
 
 	async 'refresh-photos'({ page }) {
@@ -128,7 +129,10 @@ for (const feature of features) {
 		continue;
 	}
 	console.log(feature.id);
-	const context = await browser.newContext({ viewport: { width: 1280, height: 1000 } });
+	const context = await browser.newContext({
+		viewport: { width: 1280, height: 1000 },
+		colorScheme: 'dark' // screenshots default to dark; the theme scenario toggles to light
+	});
 	const page = await context.newPage();
 	try {
 		await scenario({ page });
