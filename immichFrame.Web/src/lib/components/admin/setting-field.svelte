@@ -72,7 +72,7 @@
 			checked={target[field.key] === true}
 			onCheckedChange={(checked) => (target[field.key] = checked)}
 		/>
-		<span>{field.label}</span>
+		<span class="text-sm font-medium text-dark">{field.label}</span>
 	</label>
 	{#if field.help}
 		<HelperText>{field.help}</HelperText>
