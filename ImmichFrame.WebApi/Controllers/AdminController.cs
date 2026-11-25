@@ -267,7 +267,7 @@ namespace ImmichFrame.WebApi.Controllers
                 var people = new List<AdminPersonDto>();
                 for (var page = 1; page <= 50; page++) // hard cap so a misbehaving server cannot loop us forever
                 {
-                    var result = await api.GetAllPeopleAsync(null, null, page, 500, false, ct);
+                    var result = await api.GetAllPeopleAsync(closestAssetId: null, closestPersonId: null, isFavorite: null, isHidden: null, name: null, page: page, sharedById: null, sharedWithId: null, size: 500, withHidden: false, cancellationToken: ct);
                     people.AddRange(result.People
                         .Where(p => !string.IsNullOrWhiteSpace(p.Name))
                         .Select(p => new AdminPersonDto { Id = p.Id, Name = p.Name }));
