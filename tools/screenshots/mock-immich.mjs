@@ -47,7 +47,10 @@ const people = ['Mom', 'Dad', 'Grandma Rose', 'Emma', 'Lucas', 'Sophie'].map((na
 	name,
 	birthDate: null,
 	isHidden: false,
-	thumbnailPath: ''
+	thumbnailPath: '',
+	otherPeople: [],
+	sharedBy: [],
+	sharedWith: []
 }));
 // Which photos carry each tag. `name` is the full path (real Immich uses the last segment)
 // because the frame shows it as the photo's tag label, and the full path reads better.
@@ -170,7 +173,7 @@ http
 		const p = url.pathname.replace(/^\/api/, '');
 		console.log(req.method, req.url);
 		let m;
-		if (p === '/server/version') return json(res, { major: 3, minor: 2, patch: 1, prerelease: null });
+		if (p === '/server/version') return json(res, { major: 3, minor: 3, patch: 5, prerelease: null });
 		if (p === '/albums') return json(res, albums.map(({ range, ...a }) => a));
 		if (p === '/tags') return json(res, tags.map(({ range, ...t }) => t));
 		if (p === '/people')
