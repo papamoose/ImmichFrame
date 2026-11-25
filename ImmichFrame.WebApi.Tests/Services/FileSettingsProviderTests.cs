@@ -1,5 +1,6 @@
 using ImmichFrame.Core.Exceptions;
 using ImmichFrame.WebApi.Helpers.Config;
+using ImmichFrame.WebApi.Models;
 using ImmichFrame.WebApi.Services;
 using Microsoft.Extensions.Logging;
 using NUnit.Framework;
@@ -58,6 +59,48 @@ namespace ImmichFrame.WebApi.Tests.Services
                 Assert.That(provider.Current.GeneralSettings.Interval, Is.EqualTo(17));
                 Assert.That(provider.Current.Accounts.Single().ApiKey, Is.EqualTo("key123"));
                 Assert.That(File.Exists(Path.Combine(_configDir, "immichframe.db")), Is.False);
+            });
+        }
+
+        [Test]
+        public async Task InitializeAsync_YamlLoadsForkSettings()
+        {
+            await File.WriteAllTextAsync(Path.Combine(_configDir, "Settings.yml"), """
+                General:
+                  TouchZoneControls: true
+                Accounts:
+                  - Name: Family
+                    ImmichServerUrl: http://immich.local
+                    ApiKey: key123
+                """);
+
+            var provider = Create();
+            await provider.InitializeAsync();
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(provider.Current.GeneralSettings.TouchZoneControls, Is.True);
+                Assert.That(((ServerAccountSettings)provider.Current.Accounts.Single()).Name, Is.EqualTo("Family"));
+            });
+        }
+
+        [Test]
+        public async Task InitializeAsync_JsonLoadsForkSettings()
+        {
+            await File.WriteAllTextAsync(Path.Combine(_configDir, "Settings.json"), """
+                {
+                    "General": { "TouchZoneControls": true },
+                    "Accounts": [ { "Name": "Family", "ImmichServerUrl": "http://immich.local", "ApiKey": "key123" } ]
+                }
+                """);
+
+            var provider = Create();
+            await provider.InitializeAsync();
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(provider.Current.GeneralSettings.TouchZoneControls, Is.True);
+                Assert.That(((ServerAccountSettings)provider.Current.Accounts.Single()).Name, Is.EqualTo("Family"));
             });
         }
 

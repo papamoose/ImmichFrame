@@ -29,7 +29,7 @@
   {
     "id": "named-accounts",
     "title": "Name your accounts",
-    "summary": "Accounts get an optional name that is shown in the admin UI instead of \"Account 1\", \"Account 2\".",
+    "summary": "Accounts get an optional name that is shown in the admin UI instead of \"Account 1\", \"Account 2\". Set it in the admin UI or as `Name` on the account in your settings file.",
     "screenshots": [
       {
         "file": "named-accounts.png",
@@ -92,7 +92,7 @@
   {
     "id": "tap-zones",
     "title": "Tap-zone controls for touch screens",
-    "summary": "New `TouchZoneControls` setting. The slideshow is split into three invisible tap zones: left = back, middle = pause/play, right = next. Works with mouse clicks too. (The dashed outlines in the screenshot are drawn for illustration only.)",
+    "summary": "New `TouchZoneControls` setting. The slideshow is split into three invisible tap zones: left = back, middle = pause/play, right = next. Works with mouse clicks too. Turn it on in the admin UI or in your settings file. (The dashed outlines in the screenshot are drawn for illustration only.)",
     "screenshots": [
       {
         "file": "tap-zones.png",
